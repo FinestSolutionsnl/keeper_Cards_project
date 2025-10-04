@@ -12,8 +12,8 @@
     .compare-area{display:flex;flex-direction:column;align-items:center;gap:20px;width:100%;max-width:500px;margin-top:20px;}
     .card-box{background:rgba(20,20,20,0.85);border:3px solid #ff0033;border-radius:12px;padding:15px;box-shadow:0 0 20px rgba(255,0,51,0.6);width:95%;}
     img{max-width:100%;height:auto;border-radius:10px;box-shadow:0 0 25px rgba(255,0,51,0.7);cursor:pointer;}
-    a.full-link{display:inline-block;margin-top:30px;padding:12px 22px;border-radius:8px;background:#ff0033;color:#fff;text-decoration:none;font-weight:bold;box-shadow:0 0 15px rgba(255,0,51,0.8);transition:transform .2s ease,box-shadow .2s ease;}
-    a.full-link:hover{transform:scale(1.05);box-shadow:0 0 25px rgba(255,0,51,1);}
+    a.full-link,a.home-link{display:inline-block;margin-top:20px;padding:12px 22px;border-radius:8px;background:#ff0033;color:#fff;text-decoration:none;font-weight:bold;box-shadow:0 0 15px rgba(255,0,51,0.8);transition:transform .2s ease,box-shadow .2s ease;}
+    a.full-link:hover,a.home-link:hover{transform:scale(1.05);box-shadow:0 0 25px rgba(255,0,51,1);}
     /* fullscreen viewer */
     #lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);justify-content:center;align-items:center;z-index:999;}
     #lightbox img{max-width:95%;max-height:95%;border-radius:12px;box-shadow:0 0 30px rgba(255,0,51,0.8);}
@@ -24,7 +24,6 @@
     }
   </style>
 </head>
-<a href="index.html" class="home-link">🏠 Back to Home</a>
 <body>
 
   <h1>B4H Season 7</h1>
@@ -44,6 +43,7 @@
   </div>
 
   <a href="assets/allkeepers.html" class="full-link">View Full Keeper List</a>
+  <a href="index.html" class="home-link">🏠 Back to Home</a>
 
   <!-- fullscreen viewer -->
   <div id="lightbox"><img src="" alt="Full view"></div>
@@ -90,4 +90,3 @@
   </script>
 </body>
 </html>
-
