@@ -1,124 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Bro’s b4 HOSSA’S – Draft Lottery</title>
 <style>
-  html,body{
-    margin:0;
-    padding:0;
-    height:100%;
-    background:radial-gradient(circle at center,#a40000 0%,#000 100%);
-    color:white;
-    font-family:Arial,Helvetica,sans-serif;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    overflow:hidden;
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    background: radial-gradient(circle at center, #a40000 0%, #000 100%);
+    color: #fff; font-family: Arial, Helvetica, sans-serif;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    overflow: hidden;
   }
-  video{
-    width:95%;
-    max-width:900px;
-    border:4px solid #fff;
-    border-radius:12px;
-    box-shadow:0 0 25px #ff0000aa;
-    background:black;
-    outline:none;
+  .wrap { width: 95%; max-width: 900px; display: flex; flex-direction: column; align-items: center; }
+  video {
+    width: 100%; height: auto; background: #000;
+    border: 4px solid #fff; border-radius: 12px; box-shadow: 0 0 24px #ff0000aa;
+    outline: none; cursor: pointer;
   }
-  .controls{
-    margin-top:20px;
-    display:flex;
-    justify-content:center;
-    gap:15px;
-    flex-wrap:wrap;
-    transition:opacity 0.5s ease;
+  .controls { margin-top: 14px; }
+  .btn {
+    background: #b71c1c; color: #fff; border: none; border-radius: 10px;
+    padding: 12px 28px; font-size: 1.05rem; cursor: pointer;
+    box-shadow: 0 0 12px #ff000080; transition: transform .15s ease, background .25s ease;
   }
-  button{
-    background:#b71c1c;
-    border:none;
-    color:white;
-    font-size:1.1em;
-    padding:10px 25px;
-    border-radius:8px;
-    cursor:pointer;
-    box-shadow:0 0 10px #ff0000aa;
-    transition:background .3s,transform .2s;
-  }
-  button:hover{background:#d32f2f;transform:scale(1.05);}
-  @media(max-width:600px){
-    button{font-size:1em;padding:10px 18px;}
-    video{width:100%;border-width:2px;}
-  }
-  /* fade overlay */
-  #fade{
-    position:fixed;
-    top:0;left:0;width:100%;height:100%;
-    background:black;
-    opacity:0;
-    pointer-events:none;
-    transition:opacity 1s ease;
-    z-index:10;
+  .btn:hover { background: #d32f2f; transform: translateY(-1px); }
+  .hint { margin-top: 8px; font-size: .9rem; opacity: .85; }
+  @media (max-width: 600px) {
+    .btn { font-size: 1rem; padding: 11px 22px; }
   }
 </style>
 </head>
 <body>
+  <div class="wrap">
+    <video id="vid" playsinline muted preload="auto"></video>
 
-<div id="fade"></div>
-
-<video id="lotteryVideo" playsinline muted autoplay preload="auto"></video>
-
-<div class="controls" id="controls">
-  <button id="backBtn">⏮️ Back</button>
-  <button id="nextBtn">⏭️ Next</button>
-  <button id="homeBtn">🏠 Home</button>
-</div>
+    <div class="controls">
+      <button id="pp" class="btn">▶ Play</button>
+    </div>
+    <div class="hint">tip: tap the video to play/pause • next video auto-plays when one ends</div>
+  </div>
 
 <script>
-const videos=[
- "welcome.mp4","finalstandings.mp4","odds.mp4",
- "pick12.mp4","pick11.mp4","pick10.mp4","pick9.mp4",
- "pick8.mp4","pick7.mp4","pick6.mp4","pick5.mp4",
- "pick4.mp4","pick3.mp4","pick2.mp4","pick1.mp4"
-];
+  // --- Order to play ---
+  const files = [
+    "welcome.mp4",
+    "finalstandings.mp4",
+    "odds.mp4",
+    "pick12.mp4",
+    "pick11.mp4",
+    "pick10.mp4",
+    "pick9.mp4",
+    "pick8.mp4",
+    "pick7.mp4",
+    "pick6.mp4",
+    "pick5.mp4",
+    "pick4.mp4",
+    "pick3.mp4",
+    "pick2.mp4",
+    "pick1.mp4"
+  ].map(f => `assets/videos/${f}`);
 
-const video=document.getElementById('lotteryVideo');
-const fade=document.getElementById('fade');
-const controls=document.getElementById('controls');
-let index=0;
+  const vid = document.getElementById('vid');
+  const pp  = document.getElementById('pp');
 
-function fadeTo(callback){
-  controls.style.opacity='0'; // hide buttons
-  fade.style.opacity='1';
-  setTimeout(()=>{
-    callback();
-    fade.style.opacity='0';
-    setTimeout(()=>controls.style.opacity='1',800); // show buttons again after fade
-  },1000);
-}
+  let i = 0;
+  let endedAll = false;
 
-function loadVideo(i){
-  if(i<0||i>=videos.length)return;
-  index=i;
-  video.src=`assets/videos/${videos[index]}`;
-  video.load();
-  video.play().catch(()=>{}); // autoplay safe fallback
-}
+  function load(idx) {
+    if (idx < 0 || idx >= files.length) return;
+    i = idx;
+    endedAll = false;
+    vid.src = files[i];
+    vid.currentTime = 0;
+    vid.muted = true;           // keep muted for mobile autoplay
+    vid.playsInline = true;     // iOS inline playback
+    // Do not auto-play here; first play must be a user gesture on iOS.
+    // We’ll call play() from the Play button / video tap.
+  }
 
-document.getElementById('nextBtn').onclick=()=>{
-  if(index<videos.length-1) fadeTo(()=>loadVideo(index+1));
-};
-document.getElementById('backBtn').onclick=()=>{
-  if(index>0) fadeTo(()=>loadVideo(index-1));
-};
-document.getElementById('homeBtn').onclick=()=>{
-  window.location.href="index.html";
-};
+  async function playNow() {
+    try {
+      await vid.play();
+      pp.textContent = "⏸ Pause";
+    } catch (e) {
+      // If autoplay fails (iOS needs gesture), the user can tap the button/video again.
+      pp.textContent = "▶ Play";
+    }
+  }
 
-// Start first video
-loadVideo(0);
+  function pauseNow() {
+    vid.pause();
+    pp.textContent = "▶ Play";
+  }
+
+  // Toggle Play/Pause (button)
+  pp.addEventListener('click', () => {
+    if (endedAll) {
+      // Replay from start
+      load(0);
+      playNow();
+      return;
+    }
+    if (vid.paused) playNow(); else pauseNow();
+  });
+
+  // Toggle on video tap (same single control behavior)
+  vid.addEventListener('click', () => {
+    if (endedAll) {
+      load(0);
+      playNow();
+      return;
+    }
+    if (vid.paused) playNow(); else pauseNow();
+  });
+
+  // When a video ends, load & auto-play the next one
+  vid.addEventListener('ended', async () => {
+    if (i < files.length - 1) {
+      load(i + 1);
+      // Attempt to auto-play next; on iOS this is allowed because user already interacted.
+      await playNow();
+    } else {
+      // Finished the last video
+      endedAll = true;
+      pp.textContent = "↻ Replay";
+    }
+  });
+
+  // Initialize first video (paused, waiting for user gesture)
+  load(0);
 </script>
-
 </body>
 </html>
