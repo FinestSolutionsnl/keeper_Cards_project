@@ -16,12 +16,11 @@
     flex-direction:column;
     justify-content:center;
     align-items:center;
-    overflow:hidden; /* removes any scrolling */
+    overflow:hidden;
   }
   video{
     width:95%;
     max-width:900px;
-    height:auto;
     border:4px solid #fff;
     border-radius:12px;
     box-shadow:0 0 25px #ff0000aa;
@@ -57,7 +56,7 @@
     background:black;
     opacity:0;
     pointer-events:none;
-    transition:opacity 2s ease;
+    transition:opacity 1s ease;
     z-index:10;
   }
 </style>
@@ -78,7 +77,7 @@
 </div>
 
 <script>
-const files=[
+const videos=[
  "welcome.mp4","finalstandings.mp4","odds.mp4",
  "pick12.mp4","pick11.mp4","pick10.mp4","pick9.mp4",
  "pick8.mp4","pick7.mp4","pick6.mp4","pick5.mp4",
@@ -89,34 +88,33 @@ const video=document.getElementById('lotteryVideo');
 const fade=document.getElementById('fade');
 let index=0;
 
-function fadeTo(fn){
+function fadeTo(callback){
   fade.style.opacity='1';
   setTimeout(()=>{
-    fn();
+    callback();
     fade.style.opacity='0';
-  },2000); //2s fade
+  },1000); // 1 second fade
 }
 
 function loadVideo(i){
-  if(i<0||i>=files.length)return;
+  if(i<0||i>=videos.length)return;
   index=i;
-  video.src=`assets/videos/${files[index]}`;
+  video.src=`assets/videos/${videos[index]}`;
   video.load();
   video.play();
 }
 
 document.getElementById('nextBtn').onclick=()=>{
-  if(index<files.length-1)
-    fadeTo(()=>loadVideo(index+1));
+  if(index<videos.length-1) fadeTo(()=>loadVideo(index+1));
 };
 document.getElementById('backBtn').onclick=()=>{
-  if(index>0)
-    fadeTo(()=>loadVideo(index-1));
+  if(index>0) fadeTo(()=>loadVideo(index-1));
 };
 document.getElementById('homeBtn').onclick=()=>{
   window.location.href="index.html";
 };
 
+// Start at first video
 loadVideo(0);
 </script>
 
