@@ -1,1 +1,91 @@
-<p>Season 7 — Keeper Cards</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>B4H Season 7 – Keeper Cards</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body{margin:0;font-family:'Arial Black',sans-serif;background:radial-gradient(circle at top,#111 0%,#000 100%);color:#fff;text-align:center;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px;}
+    h1{color:#ff0033;text-shadow:0 0 12px #ff0033,0 0 24px #fff;margin-bottom:10px;}
+    p{color:#ccc;}
+    select{padding:10px 14px;font-size:1rem;border-radius:8px;border:none;margin:10px;background:#111;color:#fff;box-shadow:0 0 10px rgba(255,0,51,0.7);width:160px;}
+    .compare-area{display:flex;flex-direction:column;align-items:center;gap:20px;width:100%;max-width:500px;margin-top:20px;}
+    .card-box{background:rgba(20,20,20,0.85);border:3px solid #ff0033;border-radius:12px;padding:15px;box-shadow:0 0 20px rgba(255,0,51,0.6);width:95%;}
+    img{max-width:100%;height:auto;border-radius:10px;box-shadow:0 0 25px rgba(255,0,51,0.7);cursor:pointer;}
+    a.full-link{display:inline-block;margin-top:30px;padding:12px 22px;border-radius:8px;background:#ff0033;color:#fff;text-decoration:none;font-weight:bold;box-shadow:0 0 15px rgba(255,0,51,0.8);transition:transform .2s ease,box-shadow .2s ease;}
+    a.full-link:hover{transform:scale(1.05);box-shadow:0 0 25px rgba(255,0,51,1);}
+    /* fullscreen viewer */
+    #lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);justify-content:center;align-items:center;z-index:999;}
+    #lightbox img{max-width:95%;max-height:95%;border-radius:12px;box-shadow:0 0 30px rgba(255,0,51,0.8);}
+    @media(max-width:600px){
+      select{width:100%;max-width:320px;}
+      .card-box{width:95%;}
+      img{max-width:100%;height:auto;}
+    }
+  </style>
+</head>
+<body>
+
+  <h1>B4H Season 7</h1>
+  <p>Select any owner to view or compare keeper cards</p>
+
+  <div>
+    <label for="owner1">Owner 1:</label>
+    <select id="owner1" onchange="updateCard(1)"></select>
+    <br>
+    <label for="owner2">Owner 2:</label>
+    <select id="owner2" onchange="updateCard(2)"></select>
+  </div>
+
+  <div class="compare-area">
+    <div class="card-box"><img id="card1" alt="Select Owner 1"></div>
+    <div class="card-box"><img id="card2" alt="Select Owner 2"></div>
+  </div>
+
+  <a href="assets/allkeepers.html" class="full-link">View Full Keeper List</a>
+
+  <!-- fullscreen viewer -->
+  <div id="lightbox"><img src="" alt="Full view"></div>
+
+  <script>
+    const owners=[
+      {name:"Arny",file:"arny.png"},
+      {name:"Jonah",file:"jonah.png"},
+      {name:"Ryan",file:"ryan.png"},
+      {name:"Oakley",file:"oakley.png"},
+      {name:"Twig",file:"twig.png"},
+      {name:"Matt",file:"matt.png"},
+      {name:"Dwight",file:"dwight.png"},
+      {name:"Brad",file:"brad.png"},
+      {name:"Jenn",file:"jenn.png"},
+      {name:"Murley",file:"murley.png"},
+      {name:"Riggs",file:"riggs.png"},
+      {name:"David",file:"david.png"}
+    ];
+
+    const sel1=document.getElementById("owner1");
+    const sel2=document.getElementById("owner2");
+    const opts='<option value="">-- Select --</option>'+owners.map(o=>`<option value="${o.file}">${o.name}</option>`).join('');
+    sel1.innerHTML=opts; sel2.innerHTML=opts;
+
+    function updateCard(slot){
+      const select=slot===1?sel1:sel2;
+      const img=document.getElementById(slot===1?"card1":"card2");
+      const file=select.value;
+      img.src=file?`assets/cards/${file}`:"";
+    }
+
+    // fullscreen viewer
+    const lightbox=document.getElementById('lightbox');
+    const lightImg=lightbox.querySelector('img');
+    document.addEventListener('click',e=>{
+      if(e.target.tagName==='IMG'&&e.target.closest('.card-box')){
+        lightImg.src=e.target.src;
+        lightbox.style.display='flex';
+      }else if(e.target===lightbox){
+        lightbox.style.display='none';
+      }
+    });
+  </script>
+</body>
+</html>
