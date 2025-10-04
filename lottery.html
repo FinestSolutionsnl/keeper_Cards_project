@@ -25,6 +25,7 @@
     border-radius:12px;
     box-shadow:0 0 25px #ff0000aa;
     background:black;
+    outline:none;
   }
   .controls{
     margin-top:20px;
@@ -32,6 +33,7 @@
     justify-content:center;
     gap:15px;
     flex-wrap:wrap;
+    transition:opacity 0.5s ease;
   }
   button{
     background:#b71c1c;
@@ -65,12 +67,9 @@
 
 <div id="fade"></div>
 
-<video id="lotteryVideo" muted autoplay preload="auto">
-  <source src="assets/videos/welcome.mp4" type="video/mp4">
-  Your browser does not support HTML video.
-</video>
+<video id="lotteryVideo" playsinline muted autoplay preload="auto"></video>
 
-<div class="controls">
+<div class="controls" id="controls">
   <button id="backBtn">⏮️ Back</button>
   <button id="nextBtn">⏭️ Next</button>
   <button id="homeBtn">🏠 Home</button>
@@ -86,14 +85,17 @@ const videos=[
 
 const video=document.getElementById('lotteryVideo');
 const fade=document.getElementById('fade');
+const controls=document.getElementById('controls');
 let index=0;
 
 function fadeTo(callback){
+  controls.style.opacity='0'; // hide buttons
   fade.style.opacity='1';
   setTimeout(()=>{
     callback();
     fade.style.opacity='0';
-  },1000); // 1 second fade
+    setTimeout(()=>controls.style.opacity='1',800); // show buttons again after fade
+  },1000);
 }
 
 function loadVideo(i){
@@ -101,7 +103,7 @@ function loadVideo(i){
   index=i;
   video.src=`assets/videos/${videos[index]}`;
   video.load();
-  video.play();
+  video.play().catch(()=>{}); // autoplay safe fallback
 }
 
 document.getElementById('nextBtn').onclick=()=>{
@@ -114,7 +116,7 @@ document.getElementById('homeBtn').onclick=()=>{
   window.location.href="index.html";
 };
 
-// Start at first video
+// Start first video
 loadVideo(0);
 </script>
 
