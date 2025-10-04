@@ -5,130 +5,115 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bro’s b4 HOSSA’S – Draft Lottery</title>
 <style>
-  body {
-    margin: 0;
-    background: radial-gradient(circle at center, #a40000 0%, #000000 100%);
-    color: white;
-    font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  body{
+    margin:0;
+    background:radial-gradient(circle at center,#a40000 0%,#000 100%);
+    color:white;
+    font-family:Arial,Helvetica,sans-serif;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    overflow:hidden;
   }
-
-  video {
-    width: 95%;
-    max-width: 900px;
-    border: 4px solid #fff;
-    border-radius: 12px;
-    box-shadow: 0 0 20px #ff0000aa;
-    background-color: black;
+  video{
+    width:95%;
+    max-width:900px;
+    border:4px solid #fff;
+    border-radius:12px;
+    box-shadow:0 0 25px #ff0000aa;
+    background:black;
   }
-
-  .controls {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    flex-wrap: wrap;
+  .controls{
+    margin-top:20px;
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    flex-wrap:wrap;
   }
-
-  button {
-    background: #b71c1c;
-    border: none;
-    color: white;
-    font-size: 1.1em;
-    padding: 10px 25px;
-    border-radius: 8px;
-    cursor: pointer;
-    box-shadow: 0 0 10px #ff0000aa;
-    transition: background 0.3s, transform 0.2s;
+  button{
+    background:#b71c1c;
+    border:none;
+    color:white;
+    font-size:1.1em;
+    padding:10px 25px;
+    border-radius:8px;
+    cursor:pointer;
+    box-shadow:0 0 10px #ff0000aa;
+    transition:background .3s,transform .2s;
   }
-
-  button:hover {
-    background: #d32f2f;
-    transform: scale(1.05);
+  button:hover{background:#d32f2f;transform:scale(1.05);}
+  @media(max-width:600px){
+    button{font-size:1em;padding:10px 18px;}
+    video{width:100%;border-width:2px;}
   }
-
-  @media (max-width: 600px) {
-    button { font-size: 1em; padding: 10px 18px; }
-    video { width: 100%; border-width: 2px; }
+  /* fade overlay */
+  #fade{
+    position:fixed;
+    top:0;left:0;width:100%;height:100%;
+    background:black;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 2s ease;
+    z-index:10;
   }
 </style>
 </head>
 <body>
 
-<video id="lotteryVideo" preload="auto" poster="assets/logo.png">
+<div id="fade"></div>
+
+<video id="lotteryVideo" controls muted autoplay preload="auto">
   <source src="assets/videos/welcome.mp4" type="video/mp4">
   Your browser does not support HTML video.
 </video>
 
 <div class="controls">
   <button id="backBtn">⏮️ Back</button>
-  <button id="playBtn">▶️ Play</button>
   <button id="nextBtn">⏭️ Next</button>
   <button id="homeBtn">🏠 Home</button>
 </div>
 
 <script>
-  // List of all videos in order (adjust if you add/remove)
-  const videoFiles = [
-    "welcome.mp4",
-    "finalstandings.mp4",
-    "odds.mp4",
-    "pick12.mp4",
-    "pick11.mp4",
-    "pick10.mp4",
-    "pick9.mp4",
-    "pick8.mp4",
-    "pick7.mp4",
-    "pick6.mp4",
-    "pick5.mp4",
-    "pick4.mp4",
-    "pick3.mp4",
-    "pick2.mp4",
-    "pick1.mp4"
-  ];
+const files=[
+ "welcome.mp4","finalstandings.mp4","odds.mp4",
+ "pick12.mp4","pick11.mp4","pick10.mp4","pick9.mp4",
+ "pick8.mp4","pick7.mp4","pick6.mp4","pick5.mp4",
+ "pick4.mp4","pick3.mp4","pick2.mp4","pick1.mp4"
+];
 
-  const video = document.getElementById('lotteryVideo');
-  const playBtn = document.getElementById('playBtn');
-  const nextBtn = document.getElementById('nextBtn');
-  const backBtn = document.getElementById('backBtn');
-  const homeBtn = document.getElementById('homeBtn');
-  let currentIndex = 0;
+const video=document.getElementById('lotteryVideo');
+const fade=document.getElementById('fade');
+let index=0;
 
-  function loadVideo(index) {
-    if (index < 0 || index >= videoFiles.length) return;
-    currentIndex = index;
-    video.src = `assets/videos/${videoFiles[currentIndex]}`;
-    video.pause();
-    video.load();
-  }
+function fadeTo(fn){
+  fade.style.opacity='1';
+  setTimeout(()=>{
+    fn();
+    fade.style.opacity='0';
+  },2000); //2s fade
+}
 
-  playBtn.addEventListener('click', () => {
-    if (video.paused) video.play();
-    else video.pause();
-  });
+function loadVideo(i){
+  if(i<0||i>=files.length)return;
+  index=i;
+  video.src=`assets/videos/${files[index]}`;
+  video.load();
+  video.play();
+}
 
-  nextBtn.addEventListener('click', () => {
-    if (currentIndex < videoFiles.length - 1) {
-      loadVideo(currentIndex + 1);
-    }
-  });
-
-  backBtn.addEventListener('click', () => {
-    if (currentIndex > 0) {
-      loadVideo(currentIndex - 1);
-    }
-  });
-
-  homeBtn.addEventListener('click', () => {
-    window.location.href = "index.html";
-  });
-
-  // Start with first video loaded (paused)
-  loadVideo(0);
+document.getElementById('nextBtn').onclick=()=>{
+  if(index<files.length-1)
+    fadeTo(()=>loadVideo(index+1));
+};
+document.getElementById('backBtn').onclick=()=>{
+  if(index>0)
+    fadeTo(()=>loadVideo(index-1));
+};
+document.getElementById('homeBtn').onclick=()=>{
+  window.location.href="index.html";
+};
 </script>
 
 </body>
