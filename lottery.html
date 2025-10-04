@@ -5,8 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bro’s b4 HOSSA’S – Draft Lottery</title>
 <style>
-  body{
+  html,body{
     margin:0;
+    padding:0;
+    height:100%;
     background:radial-gradient(circle at center,#a40000 0%,#000 100%);
     color:white;
     font-family:Arial,Helvetica,sans-serif;
@@ -14,12 +16,12 @@
     flex-direction:column;
     justify-content:center;
     align-items:center;
-    height:100vh;
-    overflow:hidden;
+    overflow:hidden; /* removes any scrolling */
   }
   video{
     width:95%;
     max-width:900px;
+    height:auto;
     border:4px solid #fff;
     border-radius:12px;
     box-shadow:0 0 25px #ff0000aa;
@@ -64,7 +66,7 @@
 
 <div id="fade"></div>
 
-<video id="lotteryVideo" controls muted autoplay preload="auto">
+<video id="lotteryVideo" muted autoplay preload="auto">
   <source src="assets/videos/welcome.mp4" type="video/mp4">
   Your browser does not support HTML video.
 </video>
@@ -114,6 +116,8 @@ document.getElementById('backBtn').onclick=()=>{
 document.getElementById('homeBtn').onclick=()=>{
   window.location.href="index.html";
 };
+
+loadVideo(0);
 </script>
 
 </body>
