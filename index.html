@@ -2,49 +2,82 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Keeper Card Hub – Bro’s b4 HOSSA’S</title>
+  <title>B4H Season 7 Hub</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       margin: 0;
       font-family: 'Arial Black', sans-serif;
-      background: #000;
+      background: radial-gradient(circle at top, #111 0%, #000 100%);
       color: #fff;
       text-align: center;
-      padding: 40px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+      padding: 20px;
     }
+
     h1 {
+      font-size: clamp(1.8rem, 6vw, 3rem);
       color: #ff0033;
-      text-shadow: 0 0 12px #ff0033, 0 0 24px #ff0033;
+      text-shadow: 0 0 12px #ff0033, 0 0 24px #fff;
+      margin-bottom: 20px;
     }
-    .btn {
-      display: block;
-      width: 250px;
-      margin: 20px auto;
-      padding: 15px 0;
-      background: #ff0033;
-      color: #fff;
+
+    img.logo {
+      max-width: 200px;
+      margin-bottom: 40px;
+      filter: drop-shadow(0 0 15px rgba(255,0,51,0.8));
+    }
+
+    .menu {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    a {
       text-decoration: none;
-      font-size: 1.2em;
-      border-radius: 8px;
-      box-shadow: 0 0 20px #ff0033;
-      transition: 0.3s;
     }
-    .btn:hover {
-      background: #ff3355;
-      box-shadow: 0 0 25px #ff3355;
+
+    .ice-button {
+      display: block;
+      background: linear-gradient(145deg, #aeefff, #66c2ff);
+      border: 3px solid #fff;
+      border-radius: 12px;
+      padding: 20px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #000;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow:
+        inset 0 0 12px rgba(255,255,255,0.7),
+        0 0 25px rgba(255,0,51,0.8);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .ice-button:hover {
       transform: scale(1.05);
+      box-shadow:
+        inset 0 0 16px rgba(255,255,255,0.9),
+        0 0 40px rgba(255,0,51,1);
     }
   </style>
 </head>
 <body>
+  <h1>B4H Season 7</h1>
+  <img src="assets/logo.png" alt="League Logo" class="logo">
 
-  <h1>Bro’s b4 HOSSA’S – Keeper Hub</h1>
-  <p>Season 7 (2025–26)</p>
-
-  <a href="keepers.html" class="btn">Keeper Cards</a>
-  <a href="allkeepers.html" class="btn">All Keepers</a>
-  <a href="selectedkeepers.html" class="btn">Selected Keepers</a>
-
+  <div class="menu">
+    <a href="keepers.html" class="ice-button">Keeper Cards</a>
+    <a href="lottery.html" class="ice-button">Draft Lottery</a>
+    <a href="selectedkeepers.html" class="ice-button">Selected Keepers</a>
+  </div>
 </body>
 </html>
