@@ -5,10 +5,19 @@
   <title>B4H Season 7 Hub</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    @keyframes shimmer {
+      0% { background-position: 0 0; }
+      100% { background-position: 100px 100px; }
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 10px #ff0033, 0 0 25px #ffffff33; }
+      50% { box-shadow: 0 0 20px #ff0033, 0 0 40px #ffffff55; }
+    }
+
     body {
       margin: 0;
       font-family: 'Arial Black', sans-serif;
-      background: radial-gradient(circle at top, #111 0%, #000 100%);
       color: #fff;
       text-align: center;
       min-height: 100vh;
@@ -18,19 +27,40 @@
       align-items: center;
       gap: 30px;
       padding: 20px;
+      overflow: hidden;
+      background-color: #000;
+      background-image:
+        repeating-linear-gradient(45deg, #111 0 10px, #0a0a0a 10px 20px),
+        radial-gradient(circle at top, rgba(255,0,51,0.05), rgba(0,0,0,0.9));
+      background-size: 200px 200px, cover;
+      animation: shimmer 10s linear infinite;
+      border: 6px solid transparent;
+      border-image: linear-gradient(90deg, #ff0033, #ffffff, #ff0033) 1;
+      box-shadow: 0 0 40px rgba(255,0,51,0.5);
     }
 
     h1 {
       font-size: clamp(1.8rem, 6vw, 3rem);
-      color: #ff0033;
-      text-shadow: 0 0 12px #ff0033, 0 0 24px #fff;
-      margin-bottom: 20px;
+      color: #fff;
+      text-shadow:
+        0 0 12px #ff0033,
+        0 0 24px #ffffff,
+        0 0 50px #ff0033;
+      margin-bottom: 10px;
+      animation: fadeIn 1.5s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     img.logo {
-      max-width: 200px;
+      max-width: 220px;
       margin-bottom: 40px;
-      filter: drop-shadow(0 0 15px rgba(255,0,51,0.8));
+      filter: drop-shadow(0 0 15px rgba(255,0,51,0.8))
+              drop-shadow(0 0 30px rgba(255,255,255,0.3));
+      animation: pulse 4s ease-in-out infinite;
     }
 
     .menu {
@@ -39,16 +69,15 @@
       gap: 20px;
       width: 100%;
       max-width: 400px;
+      animation: fadeIn 1.5s ease-out 0.5s backwards;
     }
 
-    a {
-      text-decoration: none;
-    }
+    a { text-decoration: none; }
 
     .ice-button {
       display: block;
-      background: linear-gradient(145deg, #aeefff, #66c2ff);
-      border: 3px solid #fff;
+      background: linear-gradient(145deg, #ffffff 0%, #aeefff 40%, #66c2ff 100%);
+      border: 2px solid #ff0033;
       border-radius: 12px;
       padding: 20px;
       font-size: 1.2rem;
@@ -57,16 +86,26 @@
       text-transform: uppercase;
       letter-spacing: 1px;
       box-shadow:
-        inset 0 0 12px rgba(255,255,255,0.7),
+        inset 0 0 10px rgba(255,255,255,0.7),
         0 0 25px rgba(255,0,51,0.8);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     .ice-button:hover {
       transform: scale(1.05);
       box-shadow:
         inset 0 0 16px rgba(255,255,255,0.9),
-        0 0 40px rgba(255,0,51,1);
+        0 0 45px rgba(255,0,51,1);
+      background: linear-gradient(145deg, #ffebeb, #ffffff, #aeefff);
+    }
+
+    footer {
+      position: absolute;
+      bottom: 10px;
+      font-size: 0.8rem;
+      color: #ccc;
+      letter-spacing: 1px;
+      text-shadow: 0 0 6px #ff0033;
     }
   </style>
 </head>
@@ -79,5 +118,7 @@
     <a href="lottery.html" class="ice-button">Draft Lottery</a>
     <a href="selectedkeepers.html" class="ice-button">Selected Keepers</a>
   </div>
+
+  <footer>Bro’s b4 HOSSA’S • Season 7 Hub • Updated Oct 2025</footer>
 </body>
 </html>
